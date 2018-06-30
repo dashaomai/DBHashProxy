@@ -1,5 +1,5 @@
 ﻿using System;
-using Mono.Data.Sqlite;
+using System.Data.SQLite;
 
 namespace DBHashProxy.DBUtils
 {
@@ -11,7 +11,7 @@ namespace DBHashProxy.DBUtils
     {
         private string m_path;
         private int m_dbCount;
-        private SqliteConnection[] m_connections;
+        private SQLiteConnection[] m_connections;
 
         public DBProxy(string path, int dbCount)
         {
@@ -19,10 +19,10 @@ namespace DBHashProxy.DBUtils
             m_dbCount = dbCount;
 
             // 初始化所有的 SQLite 连接
-            m_connections = new SqliteConnection[m_dbCount];
+            m_connections = new SQLiteConnection[m_dbCount];
             for (int i = 0; i < m_dbCount; i++) {
                 var file = m_path + "/" + i + ".db";
-                var conn = new SqliteConnection("Data Source=" + file);
+                var conn = new SQLiteConnection("Data Source=" + file);
                 conn.Open();
                 using (var command = conn.CreateCommand())
                 {

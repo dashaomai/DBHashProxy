@@ -1,17 +1,30 @@
-
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2035
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DBHashProxy", "DBHashProxy\DBHashProxy.csproj", "{9B42CD9F-932B-4C9D-8EFA-A5039264B595}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
 		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
 		Release|x86 = Release|x86
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Debug|x64.ActiveCfg = Debug|x64
+		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Debug|x64.Build.0 = Debug|x64
 		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Debug|x86.ActiveCfg = Debug|x86
 		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Debug|x86.Build.0 = Debug|x86
+		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Release|x64.ActiveCfg = Release|x64
+		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Release|x64.Build.0 = Release|x64
 		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Release|x86.ActiveCfg = Release|x86
 		{9B42CD9F-932B-4C9D-8EFA-A5039264B595}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {2141EBA7-266D-4AB0-BEEF-76C631B40702}
 	EndGlobalSection
 EndGlobal
