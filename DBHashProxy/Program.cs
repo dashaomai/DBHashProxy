@@ -8,19 +8,26 @@ namespace DBHashProxy
     {
         public static void Main(string[] args)
         {
-            string path = System.Environment.CurrentDirectory + "/test_db";
+            // 定义文件数据库的存放目录，为软件运行相对目录下的 test_db 目录
+            string path = Environment.CurrentDirectory + "/test_db";
+            // 定义文件数据库的拆分数量
             int dbCount = 100;
 
-            System.Console.WriteLine(String.Format("准备用：{0}, {1} 初始化数据库", path, dbCount));
+            Console.WriteLine(String.Format("准备用：{0}, {1} 初始化数据库", path, dbCount));
 
             System.IO.Directory.CreateDirectory(path);
+
+            // 几个计时变量，用于统计程序不同阶段的运行时间
+            long t1, t2, t3;
+
+            // 创建数据库哈希代理对象，用于后续的一系列操作
             using (var proxy = new DBProxy(path, dbCount))
             {
                 Random random = new Random(DateTime.Now.GetHashCode());
 
-                var t1 = DateTime.Now.Ticks;
+                t1 = DateTime.Now.Ticks;
 
-                // 随机插入数据
+                // 随机插入数据（20亿条）
                 for (long i = 0, m = 2000000000L; i < m; i++)
                 {
                     string kv1 = RandomStr(random);
@@ -30,7 +37,7 @@ namespace DBHashProxy
                     proxy.Update(kv1, kv2, value);
                 }
 
-                var t2 = DateTime.Now.Ticks;
+                t2 = DateTime.Now.Ticks;
 
                 // 进行 1 万次查询
                 for (int i = 0; i < 10000; i++) {
@@ -39,14 +46,15 @@ namespace DBHashProxy
                     int value = proxy.Query(kv1, kv2);
                 }
 
-                var t3 = DateTime.Now.Ticks;
-
-                var ts1 = new TimeSpan(t2 - t1);
-                var ts2 = new TimeSpan(t3 - t2);
-                var ts3 = new TimeSpan(t3 - t1);
-
-                System.Console.WriteLine(String.Format("消耗时间：{0}, {1}, {2} （毫秒）", ts1.TotalMilliseconds, ts2.TotalMilliseconds, ts3.TotalMilliseconds));
+                t3 = DateTime.Now.Ticks;
             }
+
+            // 统计并输出运行时间
+            var ts1 = new TimeSpan(t2 - t1);
+            var ts2 = new TimeSpan(t3 - t2);
+            var ts3 = new TimeSpan(t3 - t1);
+
+            Console.WriteLine(String.Format("消耗时间：{0}, {1}, {2} （毫秒）", ts1.TotalMilliseconds, ts2.TotalMilliseconds, ts3.TotalMilliseconds));
         }
 
         private static char[] m_chars = new char[] {
