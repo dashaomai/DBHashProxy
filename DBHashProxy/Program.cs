@@ -23,12 +23,12 @@ namespace DBHashProxy
             // 创建数据库哈希代理对象，用于后续的一系列操作
             using (var proxy = new DBProxy(path, dbCount))
             {
-                Random random = new Random(DateTime.Now.GetHashCode());
+                Random random = new Random(DateTime.Now.Ticks.GetHashCode());
 
                 t1 = DateTime.Now.Ticks;
 
-                // 随机插入数据（20亿条）
-                for (long i = 0, m = 2000000000L; i < m; i++)
+                // 随机插入模拟数据（本想20亿条，后因运行时间太长，无奈改为20万条）
+                for (long i = 0, m = 200000L; i < m; i++)
                 {
                     string kv1 = RandomStr(random);
                     string kv2 = RandomStr(random);
@@ -63,6 +63,9 @@ namespace DBHashProxy
             '1', '2', '3', '4', '5', '6', '7', '8', '9', '0'
         };
 
+        private static int count = m_chars.Length;
+        private static StringBuilder builder = new StringBuilder();
+
         /// <summary>
         /// 生成 16 位长度的随机字符串
         /// </summary>
@@ -70,8 +73,7 @@ namespace DBHashProxy
         /// <param name="random">Random.</param>
         private static string RandomStr(Random random)
         {
-            var count = m_chars.Length;
-            var builder = new StringBuilder();
+            builder.Clear();
 
             for (int i = 0; i < 16; i++) {
                 var index = random.Next(count);
