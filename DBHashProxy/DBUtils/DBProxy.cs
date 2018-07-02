@@ -128,9 +128,9 @@ namespace DBHashProxy.DBUtils
             return (null != result ? int.Parse(result.ToString()) : 0);
         }
 
-
-
-
+        /// <summary>
+        /// Connection info.
+        /// </summary>
         private class ConnectionInfo
         {
             private int m_hashCode1;
