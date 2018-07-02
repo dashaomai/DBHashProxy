@@ -32,6 +32,7 @@ namespace DBHashProxy.DBUtils
                 var file = m_path + "/" + i + ".db";
                 var info = new SQLiteConnectionStringBuilder();
                 info.DataSource = file;
+                info.SyncMode = SynchronizationModes.Off;
                 var conn = new SQLiteConnection(info.ToString());
                 conn.Open();
 
@@ -76,13 +77,7 @@ namespace DBHashProxy.DBUtils
                 }
                 result = command.ExecuteNonQuery();
 
-                long t1 = DateTime.Now.Ticks;
-
                 transaction.Commit();
-
-                long t2 = DateTime.Now.Ticks;
-
-                Console.WriteLine(String.Format("更新：{0} - {1} = {2} 操作耗时：{3} 毫秒", kv1, kv2, value, new TimeSpan(t2 - t1).TotalMilliseconds));
 
                 return 1 == result;
             }
