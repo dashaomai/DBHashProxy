@@ -82,7 +82,7 @@ namespace DBHashProxy.DBUtils
 
                 long t2 = DateTime.Now.Ticks;
 
-                Console.WriteLine(String.Format("更新操作耗时：{0} 毫秒", new TimeSpan(t2 - t1).TotalMilliseconds));
+                Console.WriteLine(String.Format("更新：{0} - {1} = {2} 操作耗时：{3} 毫秒", kv1, kv2, value, new TimeSpan(t2 - t1).TotalMilliseconds));
 
                 return 1 == result;
             }
