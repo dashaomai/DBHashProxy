@@ -76,7 +76,13 @@ namespace DBHashProxy.DBUtils
                 }
                 result = command.ExecuteNonQuery();
 
+                long t1 = DateTime.Now.Ticks;
+
                 transaction.Commit();
+
+                long t2 = DateTime.Now.Ticks;
+
+                Console.WriteLine(String.Format("更新操作耗时：{0} 毫秒", new TimeSpan(t2 - t1).TotalMilliseconds));
 
                 return 1 == result;
             }
