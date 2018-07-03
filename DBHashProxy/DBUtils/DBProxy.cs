@@ -71,7 +71,7 @@ namespace DBHashProxy.DBUtils
                 bool isExists = ExecuteIntScalar(command) > 0;
 
                 if (isExists) {
-                    command.CommandText = String.Format("UPDATE rate SET val=val+{2} WHERE kv1={0} AND kv2={1} LIMIT 1", connInfo.HashCode1, connInfo.HashCode2, value);
+                    command.CommandText = String.Format("UPDATE rate SET val=val+{2} WHERE kv1={0} AND kv2={1}", connInfo.HashCode1, connInfo.HashCode2, value);
                 } else {
                     command.CommandText = String.Format("INSERT OR IGNORE INTO rate (kv1, kv2, val) VALUES({0}, {1}, {2})", connInfo.HashCode1, connInfo.HashCode2, value);
                 }
@@ -80,6 +80,47 @@ namespace DBHashProxy.DBUtils
                 transaction.Commit();
 
                 return 1 == result;
+            }
+        }
+
+        public bool BatchUpdate(string kv1, string[] kv2, int[] value)
+        {
+            if (kv2.Length > 0 && kv2.Length == value.Length)
+            {
+                var connInfo = GetConnectionInfo(kv1, kv2[0]);
+
+                var conn = m_connections[connInfo.Index];
+                var command = m_commands[connInfo.Index];
+
+                using (var transaction = conn.BeginTransaction())
+                {
+                    for(int i = 0, m = kv2.Length; i<m; i++)
+                    {
+                        int hashCode2 = kv2[i].GetHashCode();
+
+                        // 检查记录是否存在，然后决定采用更新还是插入操作
+                        command.CommandText = String.Format("SELECT COUNT(*) FROM rate WHERE kv1={0} AND kv2={1} LIMIT 1", connInfo.HashCode1, hashCode2);
+                        bool isExists = ExecuteIntScalar(command) > 0;
+
+                        if (isExists)
+                        {
+                            command.CommandText = String.Format("UPDATE rate SET val=val+{2} WHERE kv1={0} AND kv2={1}", connInfo.HashCode1, hashCode2, value[i]);
+                        }
+                        else
+                        {
+                            command.CommandText = String.Format("INSERT OR IGNORE INTO rate (kv1, kv2, val) VALUES({0}, {1}, {2})", connInfo.HashCode1, hashCode2, value[i]);
+                        }
+                        command.ExecuteNonQueryAsync();
+                    }
+
+                    transaction.Commit();
+                }
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
 
